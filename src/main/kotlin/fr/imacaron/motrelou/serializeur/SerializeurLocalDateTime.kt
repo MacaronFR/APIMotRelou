@@ -1,4 +1,4 @@
-package fr.imacaron.motrelou.serializer
+package fr.imacaron.motrelou.serializeur
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -9,7 +9,7 @@ import kotlinx.serialization.encoding.Encoder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-object LocalDateTimeSerializer: KSerializer<LocalDateTime> {
+object SerializeurLocalDateTime: KSerializer<LocalDateTime> {
 	override val descriptor: SerialDescriptor
 		get() = PrimitiveSerialDescriptor("LocalDateTime", PrimitiveKind.STRING)
 

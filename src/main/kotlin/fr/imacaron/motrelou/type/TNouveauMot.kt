@@ -1,4 +1,4 @@
-package fr.imacaron.motrelou.data.types
+package fr.imacaron.motrelou.type
 
 import kotlinx.serialization.Serializable
 

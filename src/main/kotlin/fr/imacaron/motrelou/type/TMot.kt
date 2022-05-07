@@ -1,6 +1,6 @@
-package fr.imacaron.motrelou.data.types
+package fr.imacaron.motrelou.type
 
-import fr.imacaron.motrelou.serializer.LocalDateTimeSerializer
+import fr.imacaron.motrelou.serializeur.SerializeurLocalDateTime
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 data class TMot(
 	val mot: String,
 	var createur: String,
-	@Serializable(with = LocalDateTimeSerializer::class)
+	@Serializable(with = SerializeurLocalDateTime::class)
 	var creation: LocalDateTime,
 	val definitions: MutableList<TDefinition>
 )

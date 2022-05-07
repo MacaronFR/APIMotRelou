@@ -1,6 +1,6 @@
-package fr.imacaron.motrelou.data.types
+package fr.imacaron.motrelou.type
 
-import fr.imacaron.motrelou.serializer.LocalDateTimeSerializer
+import fr.imacaron.motrelou.serializeur.SerializeurLocalDateTime
 import java.time.LocalDateTime
 import kotlinx.serialization.Serializable
 
@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class TDefinition(
 	var definition: String,
 	val createur: String,
-	@Serializable(with = LocalDateTimeSerializer::class)
+	@Serializable(with = SerializeurLocalDateTime::class)
 	val creation: LocalDateTime,
 	var index: Int
 )
