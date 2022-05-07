@@ -6,10 +6,7 @@ import fr.imacaron.motrelou.type.TNouvelleDefinition
 
 
 interface DepotDefinition {
-
 	fun ajouter(mot: String, definition: TNouvelleDefinition): TMot
-
-	fun modifier(mot: String, index: Int, definition: TMajDefinition)
-
-	fun supprimer(mot: String, index: Int)
+	fun modifier(mot: String, index: Int, definition: TMajDefinition): TMot
+	fun supprimer(mot: String, index: Int): Boolean
 }

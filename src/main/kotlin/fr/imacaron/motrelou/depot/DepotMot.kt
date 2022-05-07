@@ -12,6 +12,4 @@ interface DepotMot {
 	fun supprimer(mot: String): Boolean
 	fun aleatoire(): TMot
 	fun ajouter(mot: TNouveauMot): TMot
-	class ConflictException(message: String): Throwable(message)
-	class NotFoundException(message: String): Throwable(message)
 }
