@@ -1,0 +1,36 @@
+package fr.imacaron.motrelou
+
+import fr.imacaron.motrelou.type.TDefinition
+import fr.imacaron.motrelou.type.TMot
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.response.*
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.sql.ResultSet
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+suspend inline fun <reified T>ApplicationCall.respondJson(payload: T, code: Int = 200){
+	respondText(Json.encodeToString(payload), ContentType.Application.Json, HttpStatusCode.fromValue(code))
+}
+
+fun stringToLocalDateTime(string: String): LocalDateTime = LocalDateTime.parse(string, DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss"))
+
+fun ResultSet.getTDefinition(): TDefinition = TDefinition(
+	getString("definition")!!,
+	getString("createur")!!,
+	stringToLocalDateTime(getString("creation")!!),
+	getInt("index")
+)
+
+fun ResultSet.getTMot(): TMot = TMot(
+	getString("mot")!!,
+	getString("createur")!!,
+	stringToLocalDateTime(getString("creation")!!),
+	try{
+		mutableListOf(getTDefinition())
+	}catch(_: NullPointerException){
+		mutableListOf()
+	}
+)
