@@ -41,7 +41,11 @@ class BddMot: DepotMot {
 		stmt.setString(1, mot)
 		val res = stmt.executeQuery()
 		return if(res.next()){
-			res.getTMot()
+			val m = res.getTMot()
+			while(res.next()){
+				m.definitions.add(res.getTDefinition())
+			}
+			m
 		}else{
 			null
 		}
@@ -86,10 +90,21 @@ class BddMot: DepotMot {
 		}
 	}
 
-	override fun aleatoire(): TMot {
-		return connection.createStatement().executeQuery("SELECT $fields FROM MOTS LEFT JOIN DEFINITIONS ON MOTS.id_mot = DEFINITIONS.id_mot GROUP BY mot LIMIT ${Random().nextInt(0, count())}, 1").let{
-			it.next()
-			it.getTMot()
+	override fun aleatoire(): TMot? {
+		var res = connection.createStatement().executeQuery("SELECT id_mot FROM MOTS LIMIT ${Random().nextInt(0, count())}, 1")
+		return if(res.next()){
+			val id = res.getInt("id_mot")
+			res = connection.createStatement().executeQuery("SELECT $fields FROM MOTS LEFT JOIN DEFINITIONS ON MOTS.id_mot = DEFINITIONS.id_mot WHERE MOTS.id_mot = $id")
+			if(res.next()) {
+				val m = res.getTMot()
+				while(res.next())
+					m.definitions.add(res.getTDefinition())
+				m
+			}else{
+				null
+			}
+		}else{
+			null
 		}
 	}
 
@@ -98,12 +113,7 @@ class BddMot: DepotMot {
 		stmt.setString(1, mot.mot)
 		stmt.setString(2, mot.createur)
 		stmt.executeUpdate()
-		stmt = connection.prepareStatement("SELECT id_mot FROM MOTS WHERE mot = ?")
-		stmt.setString(1, mot.mot)
-		val idMot = stmt.executeQuery().let{
-			it.next()
-			it.getInt("id_mot")
-		}
+		val idMot = getId(mot.mot)
 		stmt = connection.prepareStatement("INSERT INTO DEFINITIONS (definition, createur, id_mot, `index`) VALUES (?, ?, ?, 1)")
 		stmt.setString(1, mot.definition)
 		stmt.setString(2, mot.createur)
@@ -114,6 +124,15 @@ class BddMot: DepotMot {
 		return stmt.executeQuery().let{
 			it.next()
 			it.getTMot()
+		}
+	}
+
+	fun getId(mot: String): Int{
+		val stmt = connection.prepareStatement("SELECT id_mot FROM MOTS WHERE mot = ?")
+		stmt.setString(1, mot)
+		return stmt.executeQuery().let{
+			it.next()
+			it.getInt("id_mot")
 		}
 	}
 }

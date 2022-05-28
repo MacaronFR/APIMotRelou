@@ -52,7 +52,7 @@ interface DepotMot {
 	 * @return un mot aléatoire
 	 * Choisi un mot aléatoire dans la base et le renvoie
 	 */
-	fun aleatoire(): TMot
+	fun aleatoire(): TMot?
 
 	/**
 	 * @author MacaronFR

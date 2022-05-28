@@ -26,14 +26,14 @@ fun stringToLocalDateTime(string: String): LocalDateTime = LocalDateTime.parse(s
 
 fun ResultSet.getTDefinition(): TDefinition = TDefinition(
 	getString("definition")!!,
-	getString("createur")!!,
+	getString("DEFINITIONS.createur")!!,
 	stringToLocalDateTime(getString("creation")!!),
 	getInt("index")
 )
 
 fun ResultSet.getTMot(): TMot = TMot(
 	getString("mot")!!,
-	getString("createur")!!,
+	getString("MOTS.createur")!!,
 	stringToLocalDateTime(getString("creation")!!),
 	try{
 		mutableListOf(getTDefinition())

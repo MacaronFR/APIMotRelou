@@ -1,8 +1,11 @@
 package fr.imacaron.motrelou.serveur
 
 import fr.imacaron.motrelou.*
+import fr.imacaron.motrelou.bdd.BddDefinition
 import fr.imacaron.motrelou.bdd.BddMot
+import fr.imacaron.motrelou.domaine.ServiceDefinition
 import fr.imacaron.motrelou.domaine.ServiceMot
+import fr.imacaron.motrelou.requete.RequetesDefinition
 import fr.imacaron.motrelou.requete.RequetesMot
 import fr.imacaron.motrelou.ressources.Mot
 import fr.imacaron.motrelou.type.TMajMot
@@ -21,7 +24,10 @@ fun Application.mot(){
 	installCORS()
 	installCallLogging()
 	installResources()
-	val reqMot: RequetesMot = ServiceMot(BddMot(), log)
+	val bddMot = BddMot()
+	val reqMot: RequetesMot = ServiceMot(bddMot, log)
+	val reqDef: RequetesDefinition = ServiceDefinition(BddDefinition(bddMot), log)
+	definition(reqDef)
 	routing {
 		get<Mot>{
 			try {
