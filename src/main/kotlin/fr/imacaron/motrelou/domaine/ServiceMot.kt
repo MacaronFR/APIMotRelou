@@ -34,9 +34,9 @@ class ServiceMot(private val depot: DepotMot, private val logger: Logger, privat
 		}
 	}
 
-	override fun maj(mot: TMajMot): TMot? {
+	override fun maj(mot: String, maj: TMajMot): TMot? {
 		return try {
-			depot.modifier(mot)
+			depot.modifier(mot, maj)
 		}catch(e: NotFoundException){
 			logger.info("Erreur lors de la modification d'un mot: ${e.message}")
 			null

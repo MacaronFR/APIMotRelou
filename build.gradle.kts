@@ -6,6 +6,7 @@ plugins {
     application
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
+    id("org.jetbrains.dokka") version "1.6.21"
 }
 
 group = "fr.imacaron"
@@ -30,7 +31,7 @@ dependencies {
     implementation("io.ktor:ktor-server-resources:$ktor_version")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.0.4")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }

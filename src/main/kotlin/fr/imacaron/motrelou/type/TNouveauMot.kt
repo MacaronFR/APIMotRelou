@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class TNouveauMot(
 	val mot: String,
 	val createur: String,
-	val definition: List<TDefinition>? = null
+	val definition: String
 )
