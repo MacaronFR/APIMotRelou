@@ -8,6 +8,12 @@ import fr.imacaron.motrelou.type.TMot
 import fr.imacaron.motrelou.type.TNouvelleDefinition
 import org.slf4j.Logger
 
+/**
+ * @author MacaronFR
+ * @param depot Le [DepotDefinition] pour interagir avec le dépôt de donnée
+ * @param logger [Logger] pour journaliser toutes les actions
+ * Implémentation de [RequetesDefinition] pour la logique métier de l'API
+ */
 class ServiceDefinition(private val depot: DepotDefinition, private val logger: Logger): RequetesDefinition {
 	override fun creer(definition: TNouvelleDefinition, mot: String): TMot? {
 		return try {

@@ -9,6 +9,13 @@ import fr.imacaron.motrelou.type.TMot
 import fr.imacaron.motrelou.type.TNouveauMot
 import org.slf4j.Logger
 
+/**
+ * @author MacaronFR
+ * @param depot Le [DepotMot] pour interagir avec la donnée
+ * @param logger Le [Logger] pour journaliser les différentes erreurs
+ * @param limit Le max de mot à retourner dans la recherche en liste
+ * Implémentation de [RequetesMot] pour la logique métier
+ */
 class ServiceMot(private val depot: DepotMot, private val logger: Logger, private val limit: Int = 20): RequetesMot {
 	override fun recherche(recherche: String?, page: Int): List<TMot> {
 		return recherche?.let{

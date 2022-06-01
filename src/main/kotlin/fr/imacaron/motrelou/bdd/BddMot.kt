@@ -11,10 +11,23 @@ import java.sql.Connection
 import java.sql.DriverManager
 import java.util.Random
 
+/**
+ * @author MacaronFR
+ * Implémentation de [DepotMot] pour interagir avec une base de donné MySQL
+ */
 class BddMot: DepotMot {
 
 	companion object {
+		/**
+		 * @author MacaronFR
+		 * Connection à la base de donnée
+		 */
 		val connection: Connection = DriverManager.getConnection(System.getenv("BDD_URL")!!, System.getenv("BDD_USER")!!, System.getenv("BDD_PASSWORD"))
+
+		/**
+		 * @author MacaronFR
+		 * Les champs minium à récupérer lors d'une requête
+		 */
 		const val fields = "mot, MOTS.creation, MOTS.createur, definition, DEFINITIONS.creation, DEFINITIONS.createur, `index`"
 	}
 
@@ -83,7 +96,12 @@ class BddMot: DepotMot {
 		return stmt.executeUpdate() != 0
 	}
 
-	fun count(): Int{
+	/**
+	 * @author MacaronFR
+	 * @return Total de mots
+	 * Retourne le nombre de mots en base
+	 */
+	private fun compte(): Int{
 		return connection.createStatement().executeQuery("SELECT COUNT(id_mot) as tot FROM MOTS").let {
 			it.next()
 			it.getInt("tot")
@@ -91,7 +109,7 @@ class BddMot: DepotMot {
 	}
 
 	override fun aleatoire(): TMot? {
-		var res = connection.createStatement().executeQuery("SELECT id_mot FROM MOTS LIMIT ${Random().nextInt(0, count())}, 1")
+		var res = connection.createStatement().executeQuery("SELECT id_mot FROM MOTS LIMIT ${Random().nextInt(0, compte())}, 1")
 		return if(res.next()){
 			val id = res.getInt("id_mot")
 			res = connection.createStatement().executeQuery("SELECT $fields FROM MOTS LEFT JOIN DEFINITIONS ON MOTS.id_mot = DEFINITIONS.id_mot WHERE MOTS.id_mot = $id")
@@ -113,7 +131,7 @@ class BddMot: DepotMot {
 		stmt.setString(1, mot.mot)
 		stmt.setString(2, mot.createur)
 		stmt.executeUpdate()
-		val idMot = getId(mot.mot)
+		val idMot = recupererId(mot.mot)
 		stmt = connection.prepareStatement("INSERT INTO DEFINITIONS (definition, createur, id_mot, `index`) VALUES (?, ?, ?, 1)")
 		stmt.setString(1, mot.definition)
 		stmt.setString(2, mot.createur)
@@ -127,7 +145,13 @@ class BddMot: DepotMot {
 		}
 	}
 
-	fun getId(mot: String): Int{
+	/**
+	 * @author MacaronFR
+	 * @param mot Le mot dont on veut l'id
+	 * @return L'id du [mot]
+	 * Permet de récupérer l'id en base du [mot]
+	 */
+	fun recupererId(mot: String): Int{
 		val stmt = connection.prepareStatement("SELECT id_mot FROM MOTS WHERE mot = ?")
 		stmt.setString(1, mot)
 		return stmt.executeQuery().let{

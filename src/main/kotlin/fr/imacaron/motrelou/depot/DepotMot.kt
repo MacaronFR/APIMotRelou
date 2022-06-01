@@ -4,7 +4,12 @@ import fr.imacaron.motrelou.type.TMajMot
 import fr.imacaron.motrelou.type.TMot
 import fr.imacaron.motrelou.type.TNouveauMot
 
+/**
+ * @author
+ * Interface d'interaction avec la donnée mot
+ */
 interface DepotMot {
+
 	/**
 	 * @author MacaronFR
 	 * @param demande Mot à rechercher
