@@ -13,8 +13,7 @@ group = "fr.imacaron"
 version = "2.0"
 
 application {
-    mainClass.set("fr.imacaron.ApplicationKt")
-
+    mainClass.set("fr.imacaron.motrelou.ApplicationKt")
     val isDevelopment: Boolean = project.ext.has("developement")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.developmebt=$isDevelopment")
 }
