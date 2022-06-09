@@ -23,6 +23,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.apache.commons:commons-dbcp2:2.9.0")
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-cors:$ktor_version")

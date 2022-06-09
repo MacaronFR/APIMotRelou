@@ -7,7 +7,10 @@ import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.resources.*
 
-fun main(args: Array<String>): Unit = EngineMain.main(args)
+fun main(args: Array<String>){
+	setupDriver()
+	EngineMain.main(args)
+}
 
 fun Application.installCORS(){
 	install(CORS){

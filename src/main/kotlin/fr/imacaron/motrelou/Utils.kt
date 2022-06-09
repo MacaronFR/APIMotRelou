@@ -10,6 +10,11 @@ import io.ktor.server.response.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.apache.commons.dbcp2.DriverManagerConnectionFactory
+import org.apache.commons.dbcp2.PoolableConnectionFactory
+import org.apache.commons.dbcp2.PoolingDriver
+import org.apache.commons.pool2.impl.GenericObjectPool
+import java.sql.DriverManager
 import java.sql.ResultSet
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -45,4 +50,14 @@ fun ResultSet.getTMot(): TMot = TMot(
 suspend inline fun <reified T>ApplicationCall.getBodyTyped(): T{
 	val t = receiveText()
 	return Json.decodeFromString(t)
+}
+
+fun setupDriver(){
+	val connectionFactory = DriverManagerConnectionFactory(System.getenv("BDD_URL"))
+	val poolableConnexionFactory = PoolableConnectionFactory(connectionFactory, null)
+	val connexionPool = GenericObjectPool(poolableConnexionFactory)
+	poolableConnexionFactory.pool = connexionPool
+	Class.forName("org.apache.commons.dbcp2.PoolingDriver")
+	val driver = DriverManager.getDriver("jdbc:apache:commons:dbcp:") as PoolingDriver
+	driver.registerPool("motrelou", connexionPool)
 }
