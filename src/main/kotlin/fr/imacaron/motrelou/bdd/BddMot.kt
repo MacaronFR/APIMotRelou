@@ -22,7 +22,14 @@ class BddMot: DepotMot {
 		 * @author MacaronFR
 		 * Connection à la base de donnée
 		 */
-		val connection: Connection = DriverManager.getConnection(System.getenv("BDD_URL")!!, System.getenv("BDD_USER")!!, System.getenv("BDD_PASSWORD"))
+		var connection: Connection = DriverManager.getConnection(System.getenv("BDD_URL")!!, System.getenv("BDD_USER")!!, System.getenv("BDD_PASSWORD"))
+			get() {
+				if(field.isClosed){
+					field = DriverManager.getConnection(System.getenv("BDD_URL")!!, System.getenv("BDD_USER")!!, System.getenv("BDD_PASSWORD"))
+				}
+				return field
+			}
+			private set
 
 		/**
 		 * @author MacaronFR

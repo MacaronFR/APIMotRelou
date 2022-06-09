@@ -5,6 +5,7 @@ import fr.imacaron.motrelou.depot.NotFoundException
 import fr.imacaron.motrelou.type.TMajDefinition
 import fr.imacaron.motrelou.type.TMot
 import fr.imacaron.motrelou.type.TNouvelleDefinition
+import java.sql.Connection
 
 /**
  * @author MacaronFR
@@ -16,7 +17,10 @@ class BddDefinition(val mot: BddMot): DepotDefinition {
 		 * @author MacaronFR
 		 * Connection à la BDD
 		 */
-		val connection = BddMot.connection
+		val connection: Connection
+			get(){
+				return BddMot.connection
+			}
 	}
 
 	override fun ajouter(mot: String, definition: TNouvelleDefinition): TMot {
