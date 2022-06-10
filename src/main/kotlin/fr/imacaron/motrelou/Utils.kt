@@ -53,7 +53,7 @@ suspend inline fun <reified T>ApplicationCall.getBodyTyped(): T{
 }
 
 fun setupDriver(){
-	val connectionFactory = DriverManagerConnectionFactory(System.getenv("BDD_URL"))
+	val connectionFactory = DriverManagerConnectionFactory(System.getenv("BDD_URL"), System.getenv("BDD_USER")!!, System.getenv("BDD_PASSWORD")!!)
 	val poolableConnexionFactory = PoolableConnectionFactory(connectionFactory, null)
 	val connexionPool = GenericObjectPool(poolableConnexionFactory)
 	poolableConnexionFactory.pool = connexionPool

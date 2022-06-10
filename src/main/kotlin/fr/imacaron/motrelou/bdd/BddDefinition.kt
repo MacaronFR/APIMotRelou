@@ -19,7 +19,7 @@ class BddDefinition(val mot: BddMot): DepotDefinition {
 		 */
 		val connection: Connection
 			get(){
-				return BddMot.connection
+				return BddMot.getConnection()
 			}
 	}
 
