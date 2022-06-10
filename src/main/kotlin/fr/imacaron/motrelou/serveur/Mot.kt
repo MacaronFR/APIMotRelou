@@ -25,7 +25,7 @@ fun Application.mot(){
 	installCallLogging()
 	installResources()
 	val bddMot = BddMot()
-	val reqMot: RequetesMot = ServiceMot(bddMot, log)
+	val reqMot: RequetesMot = ServiceMot(bddMot, log, 5)
 	val reqDef: RequetesDefinition = ServiceDefinition(BddDefinition(bddMot), log)
 	definition(reqDef)
 	routing {
