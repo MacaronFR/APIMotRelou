@@ -5,6 +5,8 @@ import fr.imacaron.motrelou.bdd.BddDefinition
 import fr.imacaron.motrelou.bdd.BddMot
 import fr.imacaron.motrelou.domaine.ServiceDefinition
 import fr.imacaron.motrelou.domaine.ServiceMot
+import fr.imacaron.motrelou.requete.ExceptionConflit
+import fr.imacaron.motrelou.requete.ExceptionMotIntrouvable
 import fr.imacaron.motrelou.requete.RequetesDefinition
 import fr.imacaron.motrelou.requete.RequetesMot
 import fr.imacaron.motrelou.ressources.Mot
@@ -12,13 +14,10 @@ import fr.imacaron.motrelou.type.TMajMot
 import fr.imacaron.motrelou.type.TNouveauMot
 import fr.imacaron.motrelou.type.TReponse
 import io.ktor.server.application.*
-import io.ktor.server.request.*
 import io.ktor.server.resources.*
 import io.ktor.server.resources.put
 import io.ktor.server.resources.post
 import io.ktor.server.routing.*
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 
 fun Application.mot(){
 	installCORS()
@@ -41,39 +40,43 @@ fun Application.mot(){
 			}
 		}
 		get<Mot.Id>{
-			reqMot.recuperer(it.mot)?.let {res ->
-				call.respondJson(res)
-			} ?: run {
+			try{
+				call.respondJson(reqMot.recuperer(it.mot))
+			} catch(e: ExceptionMotIntrouvable) {
 				call.respondJson(TReponse.NotFound)
 			}
 		}
 		put<Mot.Id>{
-			val test = call.receiveText()
-			val maj = Json.decodeFromString<TMajMot>(test)
-			reqMot.maj(it.mot, maj)?.let {
-				call.respondJson(it)
-			} ?: run{
-				call.respondJson(TReponse.NotFound)
+			call.getBodyTyped<TMajMot>().let { maj ->
+				try{
+					call.respondJson(reqMot.maj(it.mot, maj))
+				}catch(e: ExceptionMotIntrouvable){
+					call.respondJson(TReponse.NotFound)
+				}catch(e: ExceptionConflit){
+					call.respondJson(TReponse.Conflict)
+				}
 			}
 		}
 		delete<Mot.Id>{
-			if(reqMot.supprimer(it.mot)){
+			try{
+				reqMot.supprimer(it.mot)
 				call.respondJson(TReponse.NoContent)
-			}else{
+			}catch(e: ExceptionMotIntrouvable){
 				call.respondJson(TReponse.NotFound)
 			}
 		}
 		get<Mot.Random>{
-			call.respondJson(reqMot.aleatoire())
+			try {
+				call.respondJson(reqMot.aleatoire())
+			}catch(e: ExceptionMotIntrouvable){
+				call.respondJson(TReponse.NoContent)
+			}
 		}
 		post<Mot>{
-			call.getBodyTyped<TNouveauMot>().let {
-				reqMot.recuperer(it.mot)?.let {
-					call.respondJson(TReponse.Conflict)
-				}
-				reqMot.creer(it)?.let{ mot ->
-					call.respondJson(mot, 201)
-				} ?: run {
+			call.getBodyTyped<TNouveauMot>().let { nouveau ->
+				try{
+					call.respondJson(reqMot.creer(nouveau), 201)
+				} catch(e: ExceptionConflit) {
 					call.respondJson(TReponse.Conflict)
 				}
 			}

@@ -1,6 +1,8 @@
 package fr.imacaron.motrelou.serveur
 
 import fr.imacaron.motrelou.getBodyTyped
+import fr.imacaron.motrelou.requete.ExceptionIntrouvable
+import fr.imacaron.motrelou.requete.ExceptionMotIntrouvable
 import fr.imacaron.motrelou.requete.RequetesDefinition
 import fr.imacaron.motrelou.respondJson
 import fr.imacaron.motrelou.ressources.Mot
@@ -14,23 +16,24 @@ import io.ktor.server.routing.*
 fun Application.definition(reqDef: RequetesDefinition){
 	routing {
 		post<Mot.Id.Definition>{
-			reqDef.creer(call.getBodyTyped(), it.parent.mot)?.let{ mot ->
-				call.respondJson(mot, 201)
-			} ?: run{
-				call.respondJson(TReponse.Conflict)
+			try{
+				call.respondJson(reqDef.creer(call.getBodyTyped(), it.parent.mot), 201)
+			}catch(e: ExceptionMotIntrouvable){
+				call.respondJson(TReponse.NotFound)
 			}
 		}
 		put<Mot.Id.Definition.Index>{
-			reqDef.maj(call.getBodyTyped(), it.parent.parent.mot, it.index)?.let{mot ->
-				call.respondJson(mot)
-			} ?: run {
+			try{
+				call.respondJson(reqDef.maj(call.getBodyTyped(), it.parent.parent.mot, it.index))
+			} catch(e: ExceptionIntrouvable) {
 				call.respondJson(TReponse.NotFound)
 			}
 		}
 		delete<Mot.Id.Definition.Index>{
-			if(reqDef.delete(it.parent.parent.mot, it.index)){
+			try{
+				reqDef.delete(it.parent.parent.mot, it.index)
 				call.respondJson(TReponse.NoContent)
-			}else{
+			} catch(e: ExceptionIntrouvable){
 				call.respondJson(TReponse.NotFound)
 			}
 		}
