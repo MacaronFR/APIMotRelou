@@ -1,6 +1,7 @@
 package fr.imacaron.motrelou.bdd
 
 import fr.imacaron.motrelou.depot.DepotMot
+import fr.imacaron.motrelou.depot.ExceptionConflitDepot
 import fr.imacaron.motrelou.depot.ExceptionMotIntrouvableDepot
 import fr.imacaron.motrelou.getTDefinition
 import fr.imacaron.motrelou.getTMot
@@ -10,6 +11,7 @@ import fr.imacaron.motrelou.type.TNouveauMot
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
+import java.sql.SQLIntegrityConstraintViolationException
 import java.util.Random
 
 /**
@@ -108,7 +110,11 @@ class BddMot: DepotMot {
 		var stmt = getConnection().prepareStatement("INSERT INTO MOTS (mot, createur) VALUES (?, ?)")
 		stmt.setString(1, mot.mot)
 		stmt.setString(2, mot.createur)
-		stmt.executeUpdate()
+		try {
+			stmt.executeUpdate()
+		}catch(_: SQLIntegrityConstraintViolationException){
+			throw ExceptionConflitDepot("Le mot existe déjà")
+		}
 		val idMot = recupererId(mot.mot)
 		stmt = getConnection().prepareStatement("INSERT INTO DEFINITIONS (definition, createur, id_mot, `index`) VALUES (?, ?, ?, 1)")
 		stmt.setString(1, mot.definition)
