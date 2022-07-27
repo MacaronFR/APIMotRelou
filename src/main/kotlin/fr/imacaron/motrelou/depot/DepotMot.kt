@@ -32,7 +32,7 @@ interface DepotMot {
 	/**
 	 * Récupère la [page] avec [limit] résultat
 	 * @author MacaronFR
-	 * @param limit Le nombre de résultat par page
+	 * @param limit Le nombre de résultats par page
 	 * @param page La page à récupérer
 	 * @return Une liste de mot de taille max [limit], vide si aucun résultat.
 	 */
@@ -59,7 +59,7 @@ interface DepotMot {
 	 * Choisi un mot aléatoire dans la base et le renvoie
 	 * @author MacaronFR
 	 * @return un mot aléatoire
-	 * @throws ExceptionMotIntrouvableDepot quand aucun mot n'est présent dans le dépôt
+	 * @throws ExceptionMotIntrouvableDepot quand aucun mot n'est présent dans le dépôt.
 	 */
 	fun aleatoire(): TMot
 

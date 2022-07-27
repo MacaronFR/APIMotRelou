@@ -22,6 +22,6 @@ class ExceptionMotIntrouvable: ExceptionIntrouvable("Mot introuvable")
 
 /**
  * @author MacaronFR
- * Classe d'erreur durant la requête quand la définition demandée n'est pas trouvé
+ * Classe d'erreur durant la requête quand la définition demandée n'est pas trouvée
  */
 class ExceptionDefinitionIntrouvable: ExceptionIntrouvable("Définition introuvable")

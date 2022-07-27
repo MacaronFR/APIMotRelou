@@ -6,7 +6,7 @@ import fr.imacaron.motrelou.type.TNouveauMot
 
 interface RequetesMot {
 	/**
-	 * Permet de rechercher une chaine dans le dictionnaire et d'afficher une certaine page de résultat. Si [recherche] est null renvoie tout les mots du dictionnaire
+	 * Permet de rechercher une chaine dans le dictionnaire et d'afficher une certaine page de résultat. Si [recherche] est null renvoie tous les mots du dictionnaire
 	 * @author MacaronFR
 	 * @param recherche La chaine à rechercher, si null, renvoie tous les mots
 	 * @param page La page de résultat à retourner
