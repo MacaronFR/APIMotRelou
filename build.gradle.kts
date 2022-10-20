@@ -33,8 +33,10 @@ dependencies {
 	implementation("org.mariadb.jdbc:mariadb-java-client:3.0.4")
 	implementation("ch.qos.logback:logback-classic:$logback_version")
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-	testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+
+	testImplementation(kotlin("test"))
+	testImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
+//	testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
 
 java{
@@ -59,4 +61,8 @@ tasks{
 			attributes("Main-Class" to "fr.imacaron.motrelou.ApplicationKt")
 		}
 	}
+}
+
+tasks.test{
+	useJUnitPlatform()
 }
