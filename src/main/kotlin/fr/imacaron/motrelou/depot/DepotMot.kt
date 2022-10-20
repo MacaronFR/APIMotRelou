@@ -32,7 +32,7 @@ interface DepotMot {
 	/**
 	 * Récupère la [page] avec [limit] résultat
 	 * @author MacaronFR
-	 * @param limit Le nombre de résultats par page
+	 * @param limit Le nombre de résultat par page
 	 * @param page La page à récupérer
 	 * @return Une liste de mot de taille max [limit], vide si aucun résultat.
 	 */
